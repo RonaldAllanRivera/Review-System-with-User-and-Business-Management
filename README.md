@@ -1,4 +1,4 @@
-# Laravel Application with Filament - Review System with User and Business Management
+# Review System with User and Business Management
 
 This Laravel application is built on the **TALL Stack** (TailwindCSS, Alpine.js, Laravel, and Livewire) and leverages **Laravel Filament** for modern, dynamic admin panel and CRUD management. Below are the key features implemented for Users and Business management:
 

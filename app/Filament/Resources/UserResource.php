@@ -67,11 +67,13 @@ class UserResource extends Resource
                                             ->email()
                                             ->required()
                                             ->maxLength(255)
-                                            ->reactive()
                                             ->rules([
-                                                'unique:users,email', // Simple unique rule directly using the database
+                                                fn($livewire) => $livewire instanceof \Filament\Resources\Pages\EditRecord
+                                                ? 'unique:users,email,' . ($livewire->record->id ?? 'NULL')
+                                                : 'unique:users,email',
                                             ])
-                                            ->helperText('Ensure this email is unique.'),
+                                            ->disabled(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\EditRecord) // Disable on edit page
+                                            ->helperText('Ensure this email is unique. This field cannot be edited once the user is created.'),
 
                                         Forms\Components\TextInput::make('secondary_email')
                                             ->label('Secondary Email')
@@ -91,7 +93,7 @@ class UserResource extends Resource
                                             ->password()
                                             ->minLength(8)
                                             ->maxLength(100)
-                                            ->dehydrated(fn($state) => !empty ($state)) // Only update the password if the field is not empty
+                                            ->dehydrated(fn($state) => !empty($state)) // Only update the password if the field is not empty
                                             ->placeholder(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\EditRecord ? 'Leave blank to keep current password' : null)
                                             ->required(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord), // Only require on CreateUser page
 

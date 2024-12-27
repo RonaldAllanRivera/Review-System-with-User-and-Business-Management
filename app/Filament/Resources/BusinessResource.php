@@ -53,6 +53,13 @@ class BusinessResource extends Resource
                                             ->required()
                                             ->helperText('The slug will be auto-generated based on the Business Name but can be manually edited.'),
 
+                                        // Featured Image Selection
+                                        Forms\Components\Select::make('featured_image_id')
+                                            ->label('Featured Image')
+                                            ->relationship('featuredImage', 'file_name')
+                                            ->searchable()
+                                            ->helperText('Select an image from the media library.')
+
 
                                     ]),
 

@@ -18,8 +18,8 @@ class EditUser extends EditRecord
      */
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        // Check for duplicate email (excluding the current record)
-        if ($data['email']) {
+        // Check if the email key exists and is not empty
+        if (isset($data['email']) && !empty($data['email'])) {
             $existingUser = UserResource::getModel()::where('email', $data['email'])
                 ->where('id', '!=', $this->record->id)
                 ->first();

@@ -54,4 +54,9 @@ class Business extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function featuredImage()
+    {
+        return $this->belongsTo(Media::class, 'featured_image_id');
+    }
 }
