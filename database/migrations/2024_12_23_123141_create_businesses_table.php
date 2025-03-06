@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->enum('business_type', ['Business', 'Under Corporate'])->default('Business'); // Restrict to specific options
             $table->string('slug', 255);
             $table->string('business_name', 256)->default('');
+            $table->unsignedBigInteger('featured_image_id')->nullable();
             $table->text('tagline')->nullable();
             $table->string('business_address1', 256)->nullable();
             $table->string('business_address2', 256)->nullable();

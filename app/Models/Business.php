@@ -4,19 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Business extends Model
+
+class Business extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'business_type',
         'slug',
+        'featured_image_id',
         'business_name',
         'tagline',
         'business_address1',
@@ -44,7 +44,7 @@ class Business extends Model
         'monthly_report',
         'youtube_link',
         'youtube_autoplay',
-        'user_id', // Add user_id to support the relationship
+        'user_id', // For the owner relationship
     ];
 
     /**
@@ -54,4 +54,28 @@ class Business extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    /**
+     * Define Media Library Collections
+     */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('business_images')
+            ->useDisk('public') // Ensure it uses the correct disk
+            ->singleFile(); // Limit to single file per business if needed
+    }
+    // Define the relationship to the featured media
+    public function featuredImage()
+    {
+        return $this->belongsTo(\App\Models\Media::class, 'featured_image_id');
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(150)
+            ->height(150)
+            ->nonQueued();
+    }
+
 }
