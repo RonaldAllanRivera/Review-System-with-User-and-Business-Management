@@ -24,6 +24,14 @@ This Laravel application is built on the **TALL Stack** (TailwindCSS, Alpine.js,
 -   **User Association**: Businesses are linked to specific users via a `user_id` relationship.
 -   **Dynamic Fields**: Populate business-related fields dynamically in forms.
 -   **Business Factory**: Pre-defined factory for generating business data for seeding and testing.
+-   **Featured Image Selection**: Businesses can select a featured image from the media library.
+
+### Media Management
+
+-   **CRUD Operations**: Upload, view, edit, and delete media files.
+-   **Business Image Selection**: Businesses can select existing images from the media library.
+-   **Thumbnail Previews**: Uploaded images are previewed in the media manager.
+-   **Stored in Public Directory**: Media files are properly stored in `public/storage/uploads/media`.
 
 ### Testing
 
@@ -101,3 +109,7 @@ Follow these steps to clone and set up the Laravel application on your local mac
 ---
 
 This Laravel application showcases the power of the **TALL Stack** and **Laravel Filament** for modern admin panel development. It is designed to be scalable, dynamic, and user-friendly. For more details or contributions, explore the codebase or raise issues in the repository. 🚀
+
+### Laravel Version
+
+This application is currently running on **Laravel Framework 12.3.0**.

@@ -4,14 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-
-class Business extends Model implements HasMedia
+class Business extends Model
 {
-    use HasFactory, InteractsWithMedia;
+    use HasFactory;
 
     protected $fillable = [
         'business_type',
@@ -56,26 +52,10 @@ class Business extends Model implements HasMedia
     }
 
     /**
-     * Define Media Library Collections
+     * Define the relationship to the featured media.
      */
-    public function registerMediaCollections(): void
-    {
-        $this->addMediaCollection('business_images')
-            ->useDisk('public') // Ensure it uses the correct disk
-            ->singleFile(); // Limit to single file per business if needed
-    }
-    // Define the relationship to the featured media
     public function featuredImage()
     {
-        return $this->belongsTo(\App\Models\Media::class, 'featured_image_id');
+        return $this->belongsTo(Media::class, 'featured_image_id');
     }
-
-    public function registerMediaConversions(Media $media = null): void
-    {
-        $this->addMediaConversion('thumb')
-            ->width(150)
-            ->height(150)
-            ->nonQueued();
-    }
-
 }

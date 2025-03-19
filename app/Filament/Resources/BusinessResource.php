@@ -72,7 +72,6 @@ class BusinessResource extends Resource
                                 ->toArray())
                             ->reactive()
                             ->searchable()
-                            ->required()
                             ->helperText('Select an image from the media library for the business.'),
 
                         Placeholder::make('featured_image_preview')
