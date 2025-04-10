@@ -35,6 +35,7 @@ class MediaResource extends Resource
                     ->label('Upload Image')
                     ->directory('uploads/media') // Files stored in storage/app/public/uploads/media
                     ->image()
+                    ->required()
                     ->helperText('Upload an image for the selected business'),
             ]);
     }

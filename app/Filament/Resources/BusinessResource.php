@@ -65,14 +65,34 @@ class BusinessResource extends Resource
                         // Featured Image Selection: Use a select field to pick a media record
                         Select::make('featured_image_id')
                             ->label('Featured Image')
-                            ->options(fn() => \App\Models\Media::query()
-                                ->where('collection_name', 'business_images')
-                                ->orderBy('id', 'desc')
-                                ->pluck('file_name', 'id')
-                                ->toArray())
-                            ->reactive()
+                            ->options(function (callable $get, ?\App\Models\Business $record) {
+                                $businessId = $record?->id ?? $get('id');
+                                $selectedId = $get('featured_image_id');
+
+                                $query = \App\Models\Media::query()
+                                    ->where('collection_name', 'business_images')
+                                    ->when($businessId, fn($q) => $q->where('model_id', $businessId));
+
+                                // Get filtered images
+                                $options = $query->orderBy('id', 'desc')->pluck('file_name', 'id')->toArray();
+
+                                // Ensure currently selected ID is present in the list (even if not matching filter)
+                                if ($selectedId && !array_key_exists($selectedId, $options)) {
+                                    $selectedMedia = \App\Models\Media::find($selectedId);
+                                    if ($selectedMedia) {
+                                        $options = [$selectedId => $selectedMedia->file_name] + $options;
+                                    }
+                                }
+
+                                // Fallback if still empty
+                                return $options ?: [null => 'No images found for this business'];
+                            })
                             ->searchable()
-                            ->helperText('Select an image from the media library for the business.'),
+                            ->reactive()
+                            ->nullable()
+                            ->helperText('Only shows images uploaded for this business.'),
+
+
 
                         Placeholder::make('featured_image_preview')
                             ->label('Image Preview')
